@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>
+    Chess ds
+</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1>Here are your data insights</h1>
+    <hr>
+    <hr>
+    <div>
+        <h2>
+            Basic data
+        </h2>
+        <p>
+            This table is just a summary of your games and if you won or not. It doesn’t take rating into account. White has small advantage in chess, because it moves first. Usually white should win about 52% to 56% of the games when players have equal rating.
+        </p>
+        <table class="table table-striped">
+            <tr>
+                {% for header in headings %}
+                    <th>{{ header }}</th>
+                {% endfor %}
+            </tr>
+                {% for row in data %}
+                <tr>
+                    {% for cell in row %}
+                        <td>{{ cell }}</td>
+                        {% endfor %}
+                </tr>
+                {% endfor %}
+        </table>
+        <hr>
+    </div>
+    <div>
+        <h2>
+            Games each hour
+        </h2>
+        <p>
+            You can play online chess round the clock. But when should you play? Here you have The red line marking your average elo gain per game during in this dataset. Blue is your mean gain during each hour of the day so when blue line is over the red, that’s when you should play. The green line shows how many games you have played at each hour. Could you maybe improve your rating by playing earlier or later during the day?<BR>
+            <img src='data:image/png;base64,{{ hour }}'/>
+        </p>
+        <hr>
+    </div>
+    <div>
+        <h2>
+            Monthly mean and games per month
+        </h2>
+        <p>
+            Here you can see your games per month and average elo rating during that month. Maybe you can see better progress when you play more or less? Make sure that dataset includes data from multiple month to make this visualization work.
+            <img src='data:image/png;base64,{{ monthly_mean }}'/>
+        </p>
+        <hr>
+    </div>
+    <h2>
+        Best and worst openings
+    </h2>
+    <p>
+        Chess has a lot of different so called openings. Opening is a certain sequence of moves right in the beginning of the game. Chess masters have studied tons of these openings but this is maybe too much for a casual player. Here I have gathered top and bottom five openings you have played. Note that openings that have been played more rarely than two times in hundred games are ruled out. Maybe you could study some of these openings and gain advantage? In the bar plot you can see average point gain for each opening. In table you have also number of times each opening has been played and a link to that opening in Wikipedia. Please note that links have been generated dynamically so some of them might not work.<BR>
+    </p>
+    <img src='data:image/png;base64,{{ opening_vis }}'/>
+    <table class="table table-striped">
+        <tr>
+            {% for header in op_headings %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+            {% for row in op_data %}
+            <tr>
+                <td
+                    ><a href="{{ row.link }}">{{ row.opening }}</a>
+                </td>
+                <td>{{ row.count }}</td>
+                <td>{{ row.average }}</td>
+            </tr>
+            {% endfor %}
+    </table>
+    <hr>
+    {% if rem %}
+    <h2>
+        Rematch
+    </h2>
+    <p>
+        At least in lichess.org you can start a rematch with same opponent immediately if both players agree to this. Obviously you should always take a rematch when you see that you are likely to win. But when should you play rematch and when not? Here are some insights.<BR>
+    <ul>
+        {% for key in re %}
+            <li>When you have {{ key }} a game, the average elo difference between you and your opponen for rematch is {{ re[key].d }}. Your average point gain is {{ re[key].pg }}. You have played {{ re[key].l }} rematch(es) after you have {{ key }}.</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    </p>
+    <hr>
+    <div>
+        <h2>
+            Linear regression
+        </h2>
+        <p>
+            Linear regression is on of the most used and simple machine learning algorithm. The blue line in plot is your elo rating and x-axis is time. Grey line is a regression line that shows linear trend of your elo rating during the dataset. Red or green line is estimation of your elo rating during following year based on linear regression and dataset. Are you going to be a zero or hero? Please note that Magnus Carlsen who is ranked as best player in the world (November 2021) has elo rating 2855. Are you perhaps going to beat him in a year?
+            <img src='data:image/png;base64,{{ img }}'/>
+        </p>
+        <hr>
+    </div>
+    <p>
+        This was it. Hopefully you got something out from this small data science project!
+    </p>
+
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>
+    Chess ds
+</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1>Chess ds</h1>
+    <hr>
+    <hr>
+    <h2>How to use the app</h2>
+    <div>
+        <p>
+            Idea of this project is to provide insight about users chess data. App works with lichess.org API, but any .pgn file should be suitable. Here is how you can use the app.
+            <ol>
+                <li>Select the data set you want to inspect. You can begin with <a href=”https://lichess.org/@/Haimis/download”>my data at lichess.org.</a>The app uses Opening moves so it’s good idea to include them. Most of my games are Blitz games so it’s good idea to include the.</li> 
+                <li>When you have selected the data set copy API URL from the download page. Here are few samples
+                <ul>
+                    <li>small dataset: approximately 1000 games and 1 minute to process. The link is place holder in url input field.</li>
+                    <li>large dataset: approximately 5700 games and 7 minutes to process. It takes a while so I have included some screenshots below. If you want to process this dataset, please enter following link to url input field: <ul><li>https://lichess.org/api/games/user/Haimis?tags=true&clocks=false&evals=false&opening=true&since=1356998400070&until=1636754400000&perfType=blitz</li></ul>  </li>
+                    </ul>
+                </li>
+                <li>Paste the link to the input field on this page and click “send link”. The app will download the dataset, parse it and provide some insights. Please note that this might take relatively long time with larger data sets. Unfortunately the app doesn’t provide any interim information about processing so it’s good idea to start exploring with a smaller data set.</li>
+            </ol>
+        </p>
+    </div>
+    <label>You can insert your own download link to field below. The placeholder link is also a small valid dataset, so you can try out the app by just clicking "send link".</label>
+    <form action="/visualize" method="POST">
+        <label>
+            url 
+        </label>
+        <input type="text" name="export_url" id="export_url" value="https://lichess.org/api/games/user/Haimis?tags=true&clocks=false&evals=false&opening=true&since=1625086800000&until=1636754400000&perfType=blitz">
+        <input type="submit" value="send link">
+    </form>
+    <BR>
+    <h2>Screenshots from processed data</h2>
+    <img src="{{url_for('static', filename='screenshots.png')}}" align="middle" />
+</div>
+{% endblock %}
